@@ -1,0 +1,163 @@
+
+\section{Operations}
+\label{sec:operations}
+We present some of the algebraic constructions that can be extracted automatically from a theory 
+presentation. These are the operations that our library will generate. Our current list is a starting 
+list. We believe there are more constructions can be generated and will be adding them to the list 
+as we proceed with the work. 
+
+The algorithms to generate these constructions will take as input a flattened theory presentation 
+consisting of a set of declarations. Based on our discussion in the previous section, we define a 
+theory presentation as a triplet $(S,F,P)$ where $S$ is a set of types, $F$ is a set of function 
+symbols and $P$ is a set of propositions.
+%\ednote{I believe this is not how we want to define it. The three components need to be there, 
+%but we 
+%need to somehow reflect the idea that this is a telescope and the order matter. I don't know how 
+%to 
+%do 
+%that.}
+We now start defining the operations in terms of how they make use of these three components. 
+%Formal definitions are taken from \cite{ehrig2012fundamentals} and \cite{wechler1992universal}
+\begin{itemize}
+		\item The \textit{signature} of a theory describes the language presented by the theory and 
+		consists of sorts and function symbols. A signature is obtained from a theory by 
+		dropping the axioms. Therefore, given a theory $(S,F,P)$, the signature of this theory is the 
+		tuple $(S,F)$. 
+		\item The theory $B$ is a \textit{sub-algebra} of $A$, if operations of $A$ are restricted to a 
+		closed subset $B$. Given an algebra $(S,F,P)$, the sub-algebra is defined as 
+		$(S^\prime,F^\prime,P^\prime)$, where 
+		$\forall s \in S \cdot \exists s^\prime \in S^\prime \cdot s^\prime \subseteq s$ and all 
+		functions and axioms in $F^\prime$ and $P^\prime$ are changed accordingly to reflect the 
+		new sorts. A sub-algebra is called minimal if it contains no proper sub-algebras. 
+		\item The algebra $A \times B = (S,F,P)$ is a \textit{product algebra} of the two algebras $A = 
+		(S_A,F_A,P_A)$ and $B=(S_B,F_B,P_B)$ if the sorts $s_i \in S = s_{a_i} \times s_{b_i}$ and all 
+		function symbols and axioms are changed accordingly.   
+        \item A \textit{projection} from a product algebra to one of its components. 
+        \item A \textit{congruence} relation $R$ on an algebra $A$ with respect to a set of operations $S$ 
+        is an equivalence relation on $A$ that preserves its structure. A structure-preserving relation 
+        $\rightarrow$ has the property that for every operation symbols, $\sigma \in S$, of the algebra, 
+        the following axiom holds: \\
+        $x_1 \rightarrow y_1, \cdots, x_n \rightarrow y_n$ implies 
+        $\sigma(x_1,\cdots x_n) \rightarrow \sigma(y_1,\cdots y_n)$\\
+        The relation induced by a homomorphism is called an induced congruence. 
+		\item The \textit{quotient algebra} of an algebra $A$ given by a congruence relation $R$ 
+		(a.k.a the factorization of $A$ by $R$), 
+		is the algebra whose sorts and operations are described with respect to the 
+		congruence classes created by the relation $R$. A congruence class $[a]$ is defined $\{b \in 
+		s_i | (a,b) \in R\}$
+		\item The \textit{record} definition of the theory, in which each declaration may depend only on 
+		those before it. 
+		%\item Composition operator on instances of theories.
+		%\item Signature expansion
+		%\item Natural map of a congruence
+		
+    	\item The \textit{homomorphism} of an algebra $A$ can be obtained by defining two 
+    	instances of A,  
+    	$x \; y : A$, as well as a function that maps elements of the two instances together $h : x 
+    	\rightarrow y$. Then adding the preservation axiom for each function symbol. The 
+    	preservation axiom for a function symbol $f_x$ that maps to $f_y$ states that 
+    	$h(f_x(a_1, \ldots, a_n))) = f_y(h(a1), \ldots, h(an))$
+    	\item The \textit{homomorphism equality} defined as the extensional equality between the two 
+    	functions. 
+    	\item The \textit{composition} of homomorphisms
+    	\item The \textit{kernel} of a homomorphism is a congruence relation $R$ associated with 
+    	the 
+    	homomorphism $f$ from $A$ to $B$ by the rule $R \; x \; y$ iff  $h(x)=h(y)$
+    	\item The \textit{isomorphism} from algebra $A$ to algebra $B$is a homomorphism $h : A 
+    	\rightarrow B$ such that a homomorphism $g : B \rightarrow A$ exists and $f \circ g = id_B$ 
+    	and $g \circ f = id_A$.
+    	\item The \textit{endomorphism} is a homomorphism from algebra $A$ to itself, $h : A 
+    	\rightarrow A$ . 
+    	\item The \emph{automorphism} is an isomorphism from algebra $A$ to itself, $I : A 
+    	\rightarrow A$. 
+    	%\note{Y: On P.203, there is a defintion of forgtful functor as the mapping between  
+    	%$Cat(SIG^\prime)$ to $Cat(SIG)$. The definition is based on the definition of a category, not an 
+    	%algebra. I thought we may consider it for further extensions of the system.}
+    	
+		\item The \emph{term language} induced by the theory. This language consists of the set of 
+		variables, constants and function symbols of the theory. 
+		\begin{comment}
+		Terms of algebra: The set of terms $T_{OP,s}(X)$ of sort $s \in S$ for the algebra $(S, OP)$ 
+		using the set $X$ of variables is defined as
+		\begin{itemize}
+			\item $X_s \cup K_s \subseteq T_{OP,s}(X)$ where $K_s$ is the set of constant symbols of sort $s$ and $X_s$ is the set of variables of sort $s$. 
+			\item $N(t1, \ldots, tn) \in T_{OP,s}(X)$ for all operation symbols $N \in OP$ with $N : s_1 \ldots s_n \rightarrow s$ and all terms $t1 \in T_{OP,s1}(X), \ldots, tn \in T_{OP,sn}(X)$.
+			\item There are no further terms of sort $s$ in $T_{OP,s}(X)$. 
+		\end{itemize}
+		\end{comment}
+		\item The \emph{ground terms} of algebra is the term language when the set of variable is 
+		empty. 
+		\item The \emph{staged terms} of the algebra which are used for partial evaluation in a 
+		multi-staged programming setup 
+		\item The \emph{structural induction} axiom on the term language to assert a proposition 
+		$p(x)$ is true for all terms of the language. For statement $p(x)$ to be true, we need to prove 
+		that it is true for constants and variables, then inductively for the term $N(t1, \ldots, tn)$ by 
+		proving that $p(t1)$, $p(t2)$, $\ldots$ and $p(tn)$ holds. This is the definition of weak structural 
+		induction. We want to generate both weak and strong structural induction. 
+		\item The \emph{evaluation} of a term is defined in terms of an \verb|eval : |$T \rightarrow A$ 
+		function, where $T$ is the type of terms. If we consider open terms, which contain variables, 
+		we need to have a variable assignment function \verb|assign :| $X \rightarrow A$. The 
+		function is defined recursively based on the definition of the term language. 
+		\begin{comment}
+		Let $T_{OP}$ be the set of ground terms of a signature $SIG = (S, OP)$ and $A$ a $SIG-$Algebra. The evaluation function $eval : T_{OP} \rightarrow A$ is recursively defined by 
+		\begin{itemize}
+			\item $eval(N) = N_{A}$ for all constant symbols $N \in K$. 
+			\item $eval(N(t1, \ldots, tn)) = N_{A}(eval(t1), \ldots, eval(tn))$ for all $N(t1, \ldots,tn) \in T_{OP}$. 
+		\end{itemize}
+		Given an assignment function $ass : X \rightarrow A$ with $ass(x) \in A_{s}$ for $s \in S$, the extension $\overline{ass} : T_{OP}(X) \rightarrow A$ of the assignment $ass : X \rightarrow A$ is recursively defined by 
+		\begin{itemize}
+			\item $\overline{ass}(x) = ass(x)$ for all variables $x \in X$
+			\item $\overline{ass}(N) = N_A$ for all constant symbols $N \in K$. 
+			\item $\overline{ass}(N(t1, \ldots, tn)) = N_A(\overline{ass}(t1), \ldots, \overline{ass}(t2))$ for all function symbols in $T_{OP}(X)$. 
+		\end{itemize}
+		\end{comment} 
+		\item A \emph{simplify} function that applies axioms as term rewrite rules. For example, the 
+		unit axiom can result in reducing the term by removing the unit part of it. The function applies 
+		simplification rules until no more rules can be applied. 
+		\begin{comment}
+		\item Equational Specification \\
+		A specification $SPEC = (S, OP, E)$ consists of a signature $SIG = (S, OP) $ and a set $E$ of equations $e$ w.r.t $SIG$. 
+		An algebra $A$ over the specification $SPEC$ is a $SIG$- algebra $A$ which satisfies all 
+		equations in $E$. 
+		\end{comment}
+		\item The \emph{rewrite rules} defined on equations based on axioms. 
+	    Given a set $E$ of equations with a fixed set of variables $X = X_e$, each equation $e = (L,R) 
+	    \in E$ defines two substitution rules $L \Rightarrow R$ and $R \Rightarrow L$. \newline
+		The application of a substitution rule $t1 \Rightarrow t2$ to a term $t$ is valid if there is an 
+		extension $\cn{assign} : T_{OP}(X) \rightarrow T_{OP}(X)$ s.t. 
+		\begin{itemize}
+			\item $\overline{t1} = \cn{assign}(t1)$.
+			\item $\overline{t2} = \cn{assign}(t2)$.
+			\item $\overline{t1}$ is a sub-term of $t$. 
+		\end{itemize}
+		Therefore, the substitution yields a term $t^{\prime}$ defined as $t^{\prime} = t(\overline{t1}/\overline{t2})$\newline
+		$t \Rightarrow_{E}^{*} t^{\prime}$ is called a derivation from $t$ to $t^{\prime}$ via $E$. 
+		\item The set of \emph{sub-terms} of a term in the language, where a 
+		term $t1$ is a sub-term of $t2$ if $t1 \leq t2$. The $\leq$ relation is defined as: 
+		\begin{itemize}
+			\item $t \leq t$ for all $t \in T_{OP}(X)$
+			\item $t \leq N(t1, \ldots, tn)$ if $t = t_i$ for some $i \in {1, \ldots, n}$ and $N(t1, \ldots tn) \in T_{OP}(X)$
+			\item If $t1 \leq t2$ and $t2 \leq t3$ then $t1 \leq t3$. 
+		\end{itemize}
+		\item The \textit{equivalence} of two terms, where $t1 = t2$ iff $\cn{eval}_A(t1) = 
+		\cn{eval}_A(t2)$ 
+		for all algebras $A$
+		\begin{comment}
+		\item The \textit{quotient} term algebra \ednote{Is this different than the quotient algebra?}
+	Given a specification $SPEC$, the quotient term algebra $T_{SPEC} = ((Q_{s})_{s\in S}, 
+	(N_Q)_{N \in OP})$ can be defined as
+	\begin{itemize}
+	\item For each sort $s \in S$, there is a base set $Q_s = \{[t]$  $| t \in T_{OP,s}\}$ where 
+	the congruence class of $t$ s defined as $[t] = \{t^{\prime}$  $|  t^{\prime} \equiv t\}$
+	\item For each constant symbol $N : \rightarrow s$ in $OP$, the constant $N_Q$ is the 
+	congruence class generated by $N$; $N_Q = [N]$
+	\item For each operation symbol, $N : s1, \ldots, sn \rightarrow s$, in $OP$, the operation 
+	$N_Q : Q_{s1} \times \ldots \times Q_{sn} \rightarrow Q_{s}$ is defined as $N_Q([t1] \times 
+	\ldots \times [tn]) = [N(t1, \ldots tn)]$. 
+	\end{itemize}	
+			\end{comment}
+		\item The \emph{parse tree} for a term, where the term is represented as an instance of the 
+		parse tree datatype 
+		\item The homomorphism between terms and trees.
+%		\item Evaluation mappings \ednote{check the definition}
+\end{itemize}

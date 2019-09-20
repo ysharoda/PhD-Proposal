@@ -1,0 +1,122 @@
+
+\section{Related Work}
+\label{sec:related_work}
+
+Enhancing modularization and removing boilerplate code are the basis to many great ideas in computer 
+science. 
+In \cite{Goguen1984Institutions} institutions are introduced to abstract over syntax and semantics of 
+logics and work over the language structure. 
+Data type generic programming (DGP) \cite{Gibbons2007DGP} is another area of computer science that abstracts over the details of data types and focus on representing its structure. There are different approaches to DGP, surveyed in \cite{hinze2007comparing}. One approach is to map a data type to a structure representation type, that only represents information about the structure. For example a type  $\alpha :+: \beta$ represents the structure of a data type with two data constructors. This approach is followed by generic Haskell \cite{Hinze2003GenericHs} and PolyP \cite{Jansson1997PolyP}. 
+Another approach uses reflection, as in DrIFT \cite{winstanley1997type} and template Haskell \cite{Norell2004TemplateHs}. DrIFT extracts type declarations and directives to fire rules that generate code at compile time. Template Haskell allows meta programming within Haskell by providing access to the abstract syntax. This way, the structure of data types can be analyzed on the meta-level, and code can be generated according to that structure. 
+
+In our work we abstract over the details of theory presentations and offer a library of algorithms to 
+operate on their generic structure to generate related constructions. This abstraction is studied in 
+mathematics under the field of universal algebra \cite{wechler1992universal}. Different formal systems 
+have different ways of representing algebraic theories. Some systems, like Coq, may have different 
+libraries formalizing the same theories based on different languages constructs, in case of Coq the 
+constructs are modules and type classes. This is one kind of redundancy we aim to remove in this 
+research work. It is worth mentioning that we believe the existence of different representations is 
+needed, what we want to change is that no human need to rewrite the declarations, given that the 
+information in all these representation is the same. 
+
+We now look at the literature that discusses formalizing algebraic theories and related constructions. In 
+\cite{capretta1999universal}, some universal algebra constructs are formalized in the Coq proof 
+assistant, which is based on the extended calculus of constructions, but it is mentioned that a 
+weaker type system could have been used. The work in \cite{spitters2011type}, uses Coq type classes 
+to formalize some concepts of universal algebra. A formalization in Agda is presented here 
+\cite{gunther2018formalization}.  The work in \cite{benke2003universes} employs techniques from 
+generic programming to define universes of codes for parameterized term algebra and inductive 
+families. In \cite{Heras2015}, cartesian product and sub-algebra are formalized in ACL2. 
+We embody a broader scope in our study in the sense that we are not focusing on one system, but 
+looking at many systems and generating knowledge in different languages. We also aim to generate 
+many more structures than already found in literature. 
+
+Part of this work is translating the generated constructions in different languages. Both Isabelle/HOL 
+and Coq include code generation facilities, done on two stages. In both cases the input is a proof and 
+the output is a functional language. 
+In case of Isabelle/HOL \cite{haftmann2010code}, the annotated 
+proof is translated into an intermediate language called miniHaskell; a version of Haskell containing 
+type classes, instances, type and function definitions. If the target language is not Haskell, a second 
+step is needed to remove type classes. The semantics of this translation is given by a higher-order 
+rewrite systems. 
+Extraction in Coq is presented in \cite{letouzey2002new}.  It starts by eliminating 
+logical parts of the proof; the parts concerned with proving properties of the system. The remaining 
+parts, the informative part of the proof, is then translated to functions in the target language. The user 
+annotates the logical and informative parts by assigning them the types \verb|Prop| and \verb|Set|, 
+respectively. The extracted code is optimized using predefined optimizations to make it more readable 
+and efficient. The idea of generating code from proofs is also presented in 
+\cite{poernomo2005adapting}. 
+Our work differs from these systems, as we do not deal with proofs, and our target systems are 
+not only functional languages, but include theorem provers. 
+Also related is the work on CASL presented in \cite{mossakowski2002relating}, which uses institutions 
+to relate CASL to other specification languages. The logics underlying the languages are formalized as 
+institutions, with institution representations describing how they relate together. A translation from 
+one specification system to another happen through the institution representation. The translation 
+process start by first applying semantics to the source specification to obtain its representation in the 
+institution. Then, the institution morphism is applied to obtain the corresponding theory in the target 
+institution, which is then written as a specification of the target language. This related to our work 
+because the different systems we are targeting are based on different logics, but is different because it 
+does not consider the algebraic constructions we are looking to generate. 
+
+The idea of calculating new theories from existing ones is implemented in Specware 
+\cite{smith1999mechanizing} by using colimits of diagrams to define new specifications. It also related 
+to our work as it uses a library of generic refinements to refine a given specification, which is 
+close to what we are doing with algebraic theories by defining a generic library of constructions, then 
+generating them for specific theories. 
+
+Close to the spirit to what we do is the work on Stratego$\backslash$XT 
+\cite{bravenboer2008stratego}, which generates parse, format checker and pretty printer, from a 
+declarative description of a language. Also the typedefs project \cite{typedefs} that generates different 
+representations of a datatype in different languages, given its representation in Elm language or as an 
+s-expression in Lisp. Our work still has different scope and generates different structures than both 
+projects. 
+
+Our work is inspired by two developments in Haskell. The deriving mechanism in Haskell generates 
+functions specific to datatypes when the user adds the \verb|deriving| clause followed by 
+some directives of what functions to generate. For example, consider the following \verb|Expr| type 
+\begin{verbatim}
+data Expr = I Int 
+| Var String 
+| Add Expr Expr 
+| Mul Expr Expr 
+| App String Expr 
+deriving (Show,Eq)
+\end{verbatim}
+Haskell generates the functions \verb|show|, \verb|(==)| and \verb|(!=)| just because the user 
+added the clause \verb|deriving (Show,Eq)|
+Another related example can be found in the lenses package in Haskell. The lenses package 
+provide getters and setters for the datatype under the names \verb|view| and \verb|over|, 
+respectively.  
+Consider, for example, the following datatypes, taken from \cite{lenses_tut} 
+\begin{verbatim}
+data Atom = Atom { _element :: String, _point :: Point } deriving (Show)
+data Point = Point { _x :: Double, _y :: Double } deriving (Show)
+\end{verbatim}
+by calling the function \verb|makeLenses| as follows 
+\begin{verbatim}
+makeLenses ''Atom
+makeLenses ''Point
+\end{verbatim}
+The following four functions are generated 
+\begin{verbatim}
+element :: Lens' Atom String
+point   :: Lens' Atom Point
+x       :: Lens' Point Double
+y       :: Lens' Point Double
+\end{verbatim}
+A function is generated for every field defined in the type whose name starts with underscore. The 
+function has the same name without the underscore. Lenses can be composed, so we can write 
+something like 
+\begin{verbatim}
+shiftAtomX = over (point . x) (+ 1)
+\end{verbatim}
+without having to pattern match over the point type to have access to the field with the name 
+\verb|x|. 
+These two small examples give an intuition of how a lot of code can be generated by adding simple 
+clauses to the code we write. Generating this code removes boilerplate, increases productivity and 
+enhances readability of the code. Our work differs from these example in that we aim to generate 
+code in many output languages. 
+
+By examining the literature presented in this section, we conclude that related research presents 
+different pieces of solutions to our problem. In the next section, we present our approach to solving 
+the problem.

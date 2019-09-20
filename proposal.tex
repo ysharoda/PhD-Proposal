@@ -1,0 +1,116 @@
+\documentclass[12pt,fleqn]{article}
+
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{stmaryrd}
+\usepackage{graphicx}
+\usepackage[hmargin=2cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{cite}
+\usepackage{stmaryrd}
+\usepackage{color}
+\usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{fixltx2e}
+\lstset{
+	basicstyle=\ttfamily,
+	mathescape
+}
+\lstdefinelanguage{Isar}%
+{morekeywords={
+		_first,theory,end,types,datatype,consts,defs,primrec,
+		syntax,translations,apply, lemma,theorem,corollary,
+		done,sorry,goal,proof,fixed variables,_last,definition,locale},
+	sensitive=true,
+	morecomment=[l]{-- },
+	literate=
+	{\\<not>}{{$¬$}}1 {\\<times>}{{$×$}}1                 
+	{\\<Rightarrow>}{{$\Rightarrow$}}1%
+	{\\<equiv>}{{$\equiv$}}1 {~=}{{$\not=$}}1                         
+	{\\<rightleftharpoons>}
+	{{$\rightleftharpoons$}}1
+	{\\<exists>}{{$\exists$}}1 
+	{\\<parallel>}{{$\parallel$}}1 
+	{\\<Longrightarrow>}
+	{{$\Longrightarrow$}}1
+	{\\<lbrakk>}{{$\lsemantics$}}1
+	{\\<rbrakk>}{{$\rsemantics$}}1
+	{\\<longrightarrow>}
+	{{$\longrightarrow$}}1
+	{\\<and>}{{$\land$}}1
+	{\\<or>}{{$\lor$}}1
+	{\\<bigwedge>}{{$\bigwedge$}}1
+	{\\<lbrakk>}{{$\llbracket$}}1
+	{\\<rbrakk>}{{$\rrbracket$}}1
+	{\\<subseteq>}{{$\subseteq$}}1
+	{\\<one>}{{$1$}}1	
+	{\\<in>}{{$\in$}}1
+	{\\<times>}{{$\times$}}1
+	{\\<lparr>}{{$\llparenthesis$}}1
+	{\\<rparr>}{{$\rrparenthesis$}}1
+	{\\<lambda>}{{$\lambda$}}1
+	{\\<^bsub>}{{$_$}}0
+	{\\<^esub>}{{$_$}}0
+	{\\<>}{{$\llparenthesis$}}1
+	{\\<otimes>}{{$\otimes$}}1
+	{ü}{"u}1 {ä}{"a}1 {ö}{"o}1 
+	{Ü}{"U}1 {Ä}{"A}1 {Ö}{"O}1 {ß}{{ss}}1
+}[keywords,comments,strings]%
+\usepackage[show]{ed} %for ednotes
+\usepackage{comment}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+
+\newcommand{\thryNum}{$25$}
+\newcommand{\cn}[1]{\ensuremath{\operatorname{\mathtt{#1}}}}
+
+
+\begin{document}
+	
+\begin{titlepage}
+	\begin{center}
+		\includegraphics[width=0.25\textwidth]{figures/Maclogo}~\\[1cm]
+		\textsc{\Large Research Proposal}\\[0.5cm]
+		% Title
+		\rule{\linewidth}{0.5mm} \\[0.4cm]
+		{ \huge \bfseries Leveraging The Information Contained in Theory Presentations  \\[0.4cm] }
+		\rule{\linewidth}{0.5mm} \\[1.5cm]
+		% Author and supervisor
+		\begin{minipage}{0.4\textwidth}
+			\begin{center}\large
+				\large{Yasmine Sharoda}\\
+				\vspace{2cm}
+				\begin{tabular}{c c}
+					Supervisors: & Jacques Carette \\
+					                    & William Farmer 
+				\end{tabular}
+			\end{center}
+		\end{minipage}
+		
+		\vfill
+		% Bottom of the page
+		{\large \today}
+	\end{center}
+\end{titlepage}	
+
+\input{introduction}
+
+\input{thry_pres}
+
+\input{operations}
+
+\input{related_work}
+
+\input{approach}
+
+\input{conc}
+
+\bibliography{proposal}
+\bibliographystyle{apalike}
+
+\end{document}
